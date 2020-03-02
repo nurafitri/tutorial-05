@@ -18,12 +18,16 @@ public class PilotController {
 	private PilotService pilotService;
 
 	@RequestMapping("/")
-	private String home() {
+	private String home(Model model) {
+		String navigation = "HOME";
+		model.addAttribute("navigation", navigation);
 		return "home";
 	}
 
 	@RequestMapping(value = "/pilot/add", method = RequestMethod.GET)
 	private String add(Model model) {
+		String navigation = "ADD PILOT";
+		model.addAttribute("navigation", navigation);
 		model.addAttribute("pilot", new PilotModel());
 		return "addPilot";
 	}
@@ -37,6 +41,8 @@ public class PilotController {
 	@RequestMapping(value = "/pilot/view/{licenseNumber}", method = RequestMethod.GET)
 	private String viewPilot(@PathVariable(value = "licenseNumber") String licenseNumber, Model model) {
 		PilotModel pilot = pilotService.getPilotDetailByLicenseNumber(licenseNumber);
+		String navigation = "PILOT";
+		model.addAttribute("navigation", navigation);
 		model.addAttribute("pilot", pilot);
 		model.addAttribute("pilotFlight", pilot.getPilotFlight());
 		return "view-pilot";
@@ -45,6 +51,8 @@ public class PilotController {
 	@RequestMapping("/pilot/view")
 	public String searchPilot(@RequestParam(value = "licenseNumber") String licenseNumber, Model model) {
 		PilotModel pilot = pilotService.getPilotDetailByLicenseNumber(licenseNumber);
+		String navigation = "SEARCH RESULT";
+		model.addAttribute("navigation", navigation);
 		model.addAttribute("pilot", pilot);
 		return "view-pilot";
 	}
@@ -58,6 +66,8 @@ public class PilotController {
 	@RequestMapping(value = "/pilot/update/{licenseNumber}", method = RequestMethod.GET)
 	private String updatePilot(@PathVariable(value = "licenseNumber") String licenseNumber, Model model) {
 		PilotModel pilot = pilotService.getPilotDetailByLicenseNumber(licenseNumber);
+		String navigation = "UPDATE PILOT";
+		model.addAttribute("navigation", navigation);
 		model.addAttribute("pilot", pilot);
 		model.addAttribute("updatedPilot", new PilotModel());
 		return "update-pilot";

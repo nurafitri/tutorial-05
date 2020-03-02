@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<title>Home</title>
+	<title th:text="${navigation}"></title>
 
 	<head th:fragment="css">
 		<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
@@ -15,7 +15,7 @@
 
 <body>
 	<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark">
-		<a href="#" class="navbar-brand">APAP</a>
+		<a href="#" class="navbar-brand" th:text="${navigation}"></a>
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item active">

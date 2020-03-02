@@ -43,4 +43,15 @@ public class FlightServiceImpl implements FlightService {
 		flight.setDestination(updatedFlight.getDestination());
 		flight.setTime(updatedFlight.getTime());
 	}
+
+	@Override
+	public void deleteFlightById(long id) {
+		flightDb.delete(this.getFlightById(id));
+
+	}
+
+	@Override
+	public FlightModel getFlightById(long id) {
+		return flightDb.findById(id);
+	}
 }

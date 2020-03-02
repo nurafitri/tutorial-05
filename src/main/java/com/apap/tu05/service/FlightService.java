@@ -7,6 +7,8 @@ import com.apap.tu05.model.FlightModel;
 public interface FlightService {
 	FlightModel getFlightDetailByFlightNumber(String flightNumber);
 
+	FlightModel getFlightById(long id);
+
 	void addFlight(FlightModel flight);
 
 	List<FlightModel> getAllFlight();
@@ -14,4 +16,6 @@ public interface FlightService {
 	void deleteFlight(String flightNumber);
 
 	void updateFlight(String flightNumber, FlightModel flight);
+
+	void deleteFlightById(long id);
 }

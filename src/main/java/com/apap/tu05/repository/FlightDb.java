@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface FlightDb extends JpaRepository<FlightModel, Long> {
 	FlightModel findByFlightNumber(String flightNumber);
+
+	FlightModel findById(long id);
 }

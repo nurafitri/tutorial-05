@@ -5,9 +5,12 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>View Pilot</title>
+	<object th:include="fragments/fragment :: css" th:remove="tag"></object>
+	<object th:include="fragments/fragment :: js" th:remove="tag"></object>
 </head>
 
 <body>
+	<nav th:replace="fragments/fragment :: navbar"></nav>
 	<h3 th:text="'Pilot License Number: ' + ${pilot.licenseNumber}"></h3>
 	<h3 th:text="'Name: ' + ${pilot.name}"></h3>
 	<h3 th:text="'Fly Hour: ' + ${pilot.flyhour}"></h3>
@@ -18,26 +21,33 @@
 	<a th:href="@{'/pilot/delete/' + ${pilot.licenseNumber}}">Delete Pilot</a>
 	<a th:href="@{'/pilot/update/' + ${pilot.licenseNumber}}">Update Pilot</a> <br>
 	<hr>
-	<table border="1">
-		<tr>
-			<th>ID</th>
-			<th>Flight Number</th>
-			<th>Origin</th>
-			<th>Destination</th>
-			<!-- <th>Time</th> -->
-		</tr>
-		<th:block th:each="flight, iterationStatus : ${pilotFlight}"
-			th:style="${iterationStatus.even} ? 'display: none;'">
+	<form th:action="@{/flight/delete}" th:object="${pilot}" method="POST">
+		<table border="1">
 			<tr>
-				<td th:text="${iterationStatus.count}"></td>
-				<td th:text="${flight.flightNumber}"></td>
-				<td th:text="${flight.origin}"></td>
-				<td th:text="${flight.destination}"></td>
-				<td><a th:href="@{'/flight/view/' + ${flight.flightNumber}}">See Flight Detail</a></td>
+				<th>ID</th>
+				<th>Flight Number</th>
+				<th>Origin</th>
+				<th>Destination</th>
+				<th>Time</th>
+				<th>Action</th>
 			</tr>
-		</th:block>
-	</table>
-
+			<th:block th:each="flight, iterationStatus : ${pilotFlight}"
+				th:style="${iterationStatus.even} ? 'display: none;'">
+				<tr>
+					<td th:text="${iterationStatus.count}"></td>
+					<td th:text="${flight.flightNumber}"></td>
+					<td th:text="${flight.origin}"></td>
+					<td th:text="${flight.destination}"></td>
+					<td th:text="${flight.time}"></td>
+					<td>
+						<input type="checkbox" th:field="*{pilotFlight}" th:value="${flight.id}" />
+						<label th:for="${#ids.prev('pilotFlight')}">Hapus</label>
+					</td>
+				</tr>
+			</th:block>
+		</table>
+		<button type="submit">Delete Selected Flight</button>
+	</form>
 </body>
 
 </html>
