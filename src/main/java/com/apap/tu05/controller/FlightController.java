@@ -28,77 +28,89 @@ public class FlightController {
 
 	@RequestMapping(value = "/flight/add/{licenseNumber}", method = RequestMethod.GET)
 	private String add(@PathVariable(value = "licenseNumber") String licenseNumber, Model model) {
+		
 		FlightModel flight = new FlightModel();
 		PilotModel pilot = pilotService.getPilotDetailByLicenseNumber(licenseNumber);
+		
 		ArrayList<FlightModel> pilotFlight = new ArrayList<>();
 		pilotFlight.add(flight);
 		pilot.setPilotFlight(pilotFlight);
 		flight.setPilot(pilot);
-		String navigation = "ADD FLIGHT";
-		model.addAttribute("navigation", navigation);
+		
+		model.addAttribute("navigation", "ADD FLIGHT");
 		model.addAttribute("pilot", pilot);
 		model.addAttribute("flight", flight);
+		
 		return "addFlight";
 	}
 
-	@RequestMapping(value = "/flight/add/{licenseNumber}", method = RequestMethod.POST, params = { "addRow" })
+	@RequestMapping(value = "/flight/add", method = RequestMethod.POST, params = { "addRow" })
 	public String addRow(@ModelAttribute PilotModel pilot, BindingResult bindingResult, Model model) {
-		if (pilot.getPilotFlight() == null) {
-			pilot.setPilotFlight(new ArrayList<FlightModel>());
-		}
-		String navigation = "ADD FLIGHT";
-		model.addAttribute("navigation", navigation);
+		
 		FlightModel flightBaru = new FlightModel();
 		pilot.getPilotFlight().add(flightBaru);
 		model.addAttribute("pilot", pilot);
 		return "addFlight";
 	}
 
-	@RequestMapping(value = "/flight/add/{licenseNumber}", method = RequestMethod.POST, params = { "submit" })
+	@RequestMapping(value = "/flight/add", method = RequestMethod.POST, params = { "submit" })
 	private String addFlightSubmit(@ModelAttribute PilotModel pilot) {
+		
 		PilotModel currentPilot = pilotService.getPilotDetailByLicenseNumber(pilot.getLicenseNumber());
+		
 		for (FlightModel flight : pilot.getPilotFlight()) {
 			flight.setPilot(currentPilot);
 			flightService.addFlight(flight);
 		}
+		
 		return "add";
 	}
 
 	@RequestMapping(value = "/flight/delete/{flightNumber}", method = RequestMethod.GET)
 	private String deleteFlight(@PathVariable(value = "flightNumber") String flightNumber, Model model) {
+		
 		flightService.deleteFlight(flightNumber);
+		
 		return "delete-flight";
 	}
 
 	@RequestMapping(value = "/flight/delete", method = RequestMethod.POST)
 	private String deleteFlightById(@ModelAttribute PilotModel pilot, Model model) {
+		
 		for (FlightModel flight : pilot.getPilotFlight()) {
 			flightService.deleteFlightById(flight.getId());
 		}
+		
 		return "delete-flight";
 	}
 
 	@RequestMapping(value = "/flight/update/{flightNumber}", method = RequestMethod.GET)
 	private String updateFlight(@PathVariable(value = "flightNumber") String flightNumber, Model model) {
 		FlightModel flight = flightService.getFlightDetailByFlightNumber(flightNumber);
+		
 		model.addAttribute("flight", flight);
 		model.addAttribute("updatedFlight", new FlightModel());
+		
 		return "update-flight";
 	}
 
 	@RequestMapping(value = "/flight/update/{flightNumber}", method = RequestMethod.POST)
 	private String updateFlightSubmit(@ModelAttribute FlightModel updatedFlight,
 			@PathVariable(value = "flightNumber") String flightNumber, Model model) {
+		
 		flightService.updateFlight(flightNumber, updatedFlight);
+		
 		return "updated";
 	}
 
 	@RequestMapping(value = "/flights", method = RequestMethod.GET)
 	private String viewFlights(Model model) {
+		
 		List<FlightModel> flights = flightService.getAllFlight();
-		String navigation = "FLIGHTS";
-		model.addAttribute("navigation", navigation);
+		
+		model.addAttribute("navigation", "FLIGHTS");
 		model.addAttribute("flights", flights);
+		
 		return "flights";
 	}
 }
